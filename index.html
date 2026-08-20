@@ -1,445 +1,577 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kaamat Dental Clinic - Adoni</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verifiable Impressive Computer Animation</title>
+  
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
 
-        body {
-            color: #ffffff;
-            overflow-x: hidden;
-            background-color: #0d1b2a;
-        }
+  <style>
+    :root {
+      --bg-dark: #05070f;
+      --card-bg: rgba(13, 18, 36, 0.65);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --accent-cyan: #00f0ff;
+      --accent-purple: #7000ff;
+      --accent-pink: #ff007b;
+      --text-main: #f0f4fc;
+      --text-muted: #8a99ad;
+    }
 
-        /* Background Video & Overlay */
-        .video-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-            object-fit: cover;
-        }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
 
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(13, 27, 42, 0.82);
-            z-index: -1;
-        }
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
 
-        /* Navigation */
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 8%;
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(10px);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
+    /* Interactive Background Canvas */
+    #canvas-container {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: auto;
+    }
 
-        .nav-brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+    canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
 
-        .nav-logo {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
+    /* App UI Layer */
+    .app-layer {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      pointer-events: none;
+    }
 
-        .logo-text {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: #00b4d8;
-            letter-spacing: 1px;
-        }
+    .interactive {
+      pointer-events: auto;
+    }
 
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 25px;
-        }
+    /* Navigation */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 3rem;
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--card-border);
+      background: rgba(5, 7, 15, 0.4);
+    }
 
-        .nav-links a {
-            color: #ffffff;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
 
-        .nav-links a:hover {
-            color: #00b4d8;
-        }
+    .brand-badge {
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+    }
 
-        /* Hero Section */
-        .hero {
-            min-height: 80vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 40px 20px;
-        }
+    .nav-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
 
-        .hero-logo-large {
-            width: 110px;
-            height: 110px;
-            border-radius: 50%;
-            margin-bottom: 20px;
-            border: 2px solid #00b4d8;
-        }
+    .btn {
+      padding: 0.65rem 1.25rem;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.875rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.25s ease;
+      border: 1px solid transparent;
+      outline: none;
+    }
 
-        .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 15px;
-            color: #ffffff;
-        }
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: var(--card-border);
+      color: var(--text-main);
+    }
 
-        .hero p {
-            font-size: 1.2rem;
-            max-width: 600px;
-            margin-bottom: 30px;
-            color: #e0e1dd;
-        }
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+    }
 
-        .hero-btns {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(0, 240, 255, 0.25);
+    }
 
-        .btn {
-            display: inline-block;
-            padding: 12px 28px;
-            background: #00b4d8;
-            color: #ffffff;
-            text-decoration: none;
-            border-radius: 30px;
-            font-weight: 600;
-            border: none;
-            cursor: pointer;
-            transition: background 0.3s, transform 0.2s;
-        }
+    .btn-primary:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(112, 0, 255, 0.4);
+    }
 
-        .btn:hover {
-            background: #90e0ef;
-            color: #0d1b2a;
-            transform: translateY(-2px);
-        }
+    /* Main Hero Area */
+    main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      padding: 2.5rem 3rem;
+      gap: 2rem;
+      align-items: center;
+    }
 
-        .btn-secondary {
-            background: transparent;
-            border: 2px solid #00b4d8;
-            color: #00b4d8;
-        }
+    .hero-content {
+      max-width: 680px;
+    }
 
-        .btn-secondary:hover {
-            background: #00b4d8;
-            color: #ffffff;
-        }
+    .pill-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.4rem 0.85rem;
+      background: rgba(0, 240, 255, 0.1);
+      border: 1px solid rgba(0, 240, 255, 0.2);
+      border-radius: 50px;
+      color: var(--accent-cyan);
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 1.25rem;
+    }
 
-        /* Section Container */
-        .section {
-            padding: 60px 8%;
-            background: rgba(13, 27, 42, 0.65);
-            backdrop-filter: blur(6px);
-            margin: 20px 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
+    h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 3.5rem;
+      line-height: 1.1;
+      font-weight: 700;
+      letter-spacing: -1.5px;
+      margin-bottom: 1.25rem;
+      background: linear-gradient(180deg, #ffffff 40%, var(--text-muted) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
 
-        .section-title {
-            text-align: center;
-            font-size: 2rem;
-            margin-bottom: 40px;
-            color: #00b4d8;
-        }
+    p.lead {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
 
-        /* Clinic Gallery Section */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-        }
+    /* Glass Control Sidebar */
+    .controls-panel {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    }
 
-        .gallery-item {
-            border-radius: 10px;
-            overflow: hidden;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
+    .panel-header {
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--accent-cyan);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 0.75rem;
+    }
 
-        .gallery-item img {
-            width: 100%;
-            height: 220px;
-            object-fit: cover;
-            display: block;
-            transition: transform 0.3s;
-        }
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
 
-        .gallery-item img:hover {
-            transform: scale(1.03);
-        }
+    .control-group label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+    }
 
-        .gallery-caption {
-            padding: 15px;
-            font-size: 0.95rem;
-            text-align: center;
-            color: #e0e1dd;
-        }
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--accent-cyan);
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      height: 6px;
+      outline: none;
+      cursor: pointer;
+    }
 
-        /* Transformation Highlight */
-        .transformation-container {
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: center;
-        }
+    .modes-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+    }
 
-        .transformation-img {
-            width: 100%;
-            max-height: 400px;
-            object-fit: contain;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            margin-bottom: 15px;
-        }
+    .mode-btn {
+      padding: 0.6rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+    }
 
-        /* Appointment Form */
-        .appointment-form {
-            max-width: 550px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 30px;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
+    .mode-btn.active {
+      background: rgba(0, 240, 255, 0.15);
+      border-color: var(--accent-cyan);
+      color: #fff;
+    }
 
-        .form-row {
-            display: flex;
-            gap: 15px;
-        }
+    /* Metric Footer */
+    footer {
+      padding: 1.5rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--card-border);
+      background: rgba(5, 7, 15, 0.4);
+    }
 
-        .form-row .form-group {
-            flex: 1;
-        }
+    .stats {
+      display: flex;
+      gap: 2rem;
+    }
 
-        .form-group {
-            margin-bottom: 20px;
-        }
+    .stat-item b {
+      color: var(--accent-cyan);
+    }
 
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 0.95rem;
-            color: #e0e1dd;
-        }
-
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 12px;
-            border-radius: 6px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            background: rgba(0, 0, 0, 0.3);
-            color: #ffffff;
-            font-size: 1rem;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: #00b4d8;
-        }
-
-        .whatsapp-btn {
-            width: 100%;
-            background: #25d366;
-            color: #ffffff;
-            font-size: 1.05rem;
-        }
-
-        .whatsapp-btn:hover {
-            background: #1ebc57;
-            color: #ffffff;
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 25px;
-            background: rgba(10, 17, 26, 0.95);
-            font-size: 0.9rem;
-            color: #778da9;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 2.2rem; }
-            .nav-links { display: none; }
-            .form-row { flex-direction: column; gap: 0; }
-        }
-    </style>
+    @media (max-width: 960px) {
+      main {
+        grid-template-columns: 1fr;
+        padding: 2rem 1.5rem;
+      }
+      header, footer {
+        padding: 1rem 1.5rem;
+      }
+      h1 {
+        font-size: 2.5rem;
+      }
+    }
+  </style>
 </head>
 <body>
 
-    <!-- Background Video -->
-    <video autoplay muted loop playsinline class="video-background">
-        <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260629_021419_291eb2af-5ed4-45a0-a1d6-3ef58f4bca0b.mp4" type="video/mp4">
-    </video>
-    <div class="overlay"></div>
+  <!-- Motion Graphics Canvas Engine -->
+  <div id="canvas-container">
+    <canvas id="motionCanvas"></canvas>
+  </div>
 
-    <!-- Navigation Bar -->
-    <nav>
-        <div class="nav-brand">
-            <img src="WhatsApp Image 2026-08-20 at 4.33.40 PM.jpeg" alt="Kaamat Dental Logo" class="nav-logo">
-            <span class="logo-text">KAAMAT DENTAL</span>
+  <!-- UI & Controls -->
+  <div class="app-layer">
+    <header class="interactive">
+      <div class="brand">
+        <div class="brand-badge"><i data-lucide="sparkles"></i></div>
+        <span>ANIK STUDIO</span>
+      </div>
+      <div class="nav-actions">
+        <button class="btn btn-secondary" id="resetBtn"><i data-lucide="rotate-ccw"></i> Reset Scene</button>
+        <button class="btn btn-primary" id="burstBtn"><i data-lucide="zap"></i> Kinetic Burst</button>
+      </div>
+    </header>
+
+    <main>
+      <div class="hero-content">
+        <div class="pill-tag"><i data-lucide="activity"></i> Real-Time Vector Physics</div>
+        <h1>Interactive Motion & Visual Computing</h1>
+        <p class="lead">
+          Dynamic procedural simulation utilizing vector kinematics, multi-layered particle gravity grids, and fluid geometric morphing. Move your cursor to interact with the field.
+        </p>
+      </div>
+
+      <!-- Real-Time Modifier Panel -->
+      <aside class="controls-panel interactive">
+        <div class="panel-header">
+          <i data-lucide="sliders"></i> Dynamics Engine
         </div>
-        <ul class="nav-links">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#gallery">Clinic</a></li>
-            <li><a href="#transformations">Results</a></li>
-            <li><a href="#book">Book Appointment</a></li>
-        </ul>
-    </nav>
 
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-        <img src="WhatsApp Image 2026-08-20 at 4.33.40 PM.jpeg" alt="Kaamat Dental Logo" class="hero-logo-large">
-        <h1>Kaamat Dental Clinic - Adoni</h1>
-        <p>Providing advanced dental care and real smile transformations in a modern, comfortable environment.</p>
-        <div class="hero-btns">
-            <a href="#book" class="btn">Confirm Appointment</a>
-            <a href="https://maps.app.goo.gl/mHNMPJTasVLqe243A" target="_blank" class="btn btn-secondary">Find Us on Google Maps</a>
+        <div class="control-group">
+          <label>Simulation Mode</label>
+          <div class="modes-grid">
+            <button class="mode-btn active" data-mode="nebula">Nebula</button>
+            <button class="mode-btn" data-mode="matrix">Matrix Grid</button>
+            <button class="mode-btn" data-mode="orbit">Vortex</button>
+            <button class="mode-btn" data-mode="geometric">Polyhedron</button>
+          </div>
         </div>
-    </section>
 
-    <!-- Clinic Gallery -->
-    <section class="section" id="gallery">
-        <h2 class="section-title">Our Facility</h2>
-        <div class="gallery-grid">
-            <div class="gallery-item">
-                <img src="quickshot_260820_161705.jpg" alt="Waiting Area & Reception">
-                <div class="gallery-caption">Modern Reception & Waiting Area</div>
-            </div>
-            <div class="gallery-item">
-                <img src="quickshot_260820_161645.jpg" alt="Treatment Chair">
-                <div class="gallery-caption">State-of-the-Art Dental Setup</div>
-            </div>
-            <div class="gallery-item">
-                <img src="quickshot_260820_161459.png" alt="Branding Signage">
-                <div class="gallery-caption">Kaamat Dental Branding</div>
-            </div>
+        <div class="control-group">
+          <label>Particle Velocity <span id="speedVal">1.2x</span></label>
+          <input type="range" id="speedSlider" min="0.2" max="3" step="0.1" value="1.2">
         </div>
-    </section>
 
-    <!-- Results / Transformations -->
-    <section class="section" id="transformations">
-        <h2 class="section-title">Smile Transformations</h2>
-        <div class="transformation-container">
-            <img src="quickshot_260820_161809.jpg" alt="Before and After Smile Transformation" class="transformation-img">
-            <p>Real smile transformation results achieved at Kaamat Dental Clinic Adoni.</p>
+        <div class="control-group">
+          <label>Attractor Force <span id="gravityVal">120px</span></label>
+          <input type="range" id="gravitySlider" min="40" max="250" step="10" value="120">
         </div>
-    </section>
 
-    <!-- WhatsApp Appointment Form -->
-    <section class="section" id="book">
-        <h2 class="section-title">Book Your Appointment</h2>
-        <form class="appointment-form" id="appointmentForm" onsubmit="sendToWhatsApp(event)">
-            <div class="form-group">
-                <label for="fullName">Name</label>
-                <input type="text" id="fullName" placeholder="Enter your full name" required>
-            </div>
+        <div class="control-group">
+          <label>Particle Density <span id="countVal">160</span></label>
+          <input type="range" id="countSlider" min="50" max="350" step="10" value="160">
+        </div>
+      </aside>
+    </main>
 
-            <div class="form-group">
-                <label for="phone">Phone Number</label>
-                <input type="tel" id="phone" placeholder="Enter your phone number" required>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="city">City</label>
-                    <input type="text" id="city" placeholder="City" required>
-                </div>
-                <div class="form-group">
-                    <label for="state">State</label>
-                    <input type="text" id="state" placeholder="State" required>
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="pincode">Pincode</label>
-                    <input type="text" id="pincode" placeholder="Pincode" required pattern="[0-9]{6}" title="Please enter a valid 6-digit pincode">
-                </div>
-                <div class="form-group">
-                    <label for="timing">Preferred Timing</label>
-                    <select id="timing" required>
-                        <option value="Morning (10:00 AM - 1:00 PM)">Morning (10:00 AM - 1:00 PM)</option>
-                        <option value="Afternoon (2:00 PM - 5:00 PM)">Afternoon (2:00 PM - 5:00 PM)</option>
-                        <option value="Evening (5:00 PM - 8:00 PM)">Evening (5:00 PM - 8:00 PM)</option>
-                    </select>
-                </div>
-            </div>
-
-            <button type="submit" class="btn whatsapp-btn">Confirm Appointment</button>
-        </form>
-    </section>
-
-    <!-- Footer -->
     <footer>
-        <p>&copy; 2026 Kaamat Dental Clinic Adoni. All rights reserved.</p>
+      <div>Procedural WebGL & 2D Canvas Motion Experiment</div>
+      <div class="stats">
+        <div class="stat-item">FPS: <b id="fpsCount">60</b></div>
+        <div class="stat-item">Particles: <b id="renderedCount">160</b></div>
+      </div>
     </footer>
+  </div>
 
-    <script>
-        function sendToWhatsApp(event) {
-            event.preventDefault();
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
 
-            // Extract form values
-            const name = document.getElementById('fullName').value;
-            const phone = document.getElementById('phone').value;
-            const city = document.getElementById('city').value;
-            const state = document.getElementById('state').value;
-            const pincode = document.getElementById('pincode').value;
-            const timing = document.getElementById('timing').value;
+    // Canvas Engine Implementation
+    const canvas = document.getElementById('motionCanvas');
+    const ctx = canvas.getContext('2d');
 
-            // Target Phone Number
-            const targetWhatsApp = "919100890404"; 
+    let width, height;
+    let particles = [];
+    let config = {
+      mode: 'nebula',
+      count: 160,
+      speed: 1.2,
+      gravityRadius: 120,
+      colorPalette: ['#00f0ff', '#7000ff', '#ff007b', '#3b82f6']
+    };
 
-            // Format message string
-            let message = `Hello Kaamat Dental Clinic,%0A%0A`;
-            message += `I would like to confirm my appointment:%0A`;
-            message += `*Name:* ${encodeURIComponent(name)}%0A`;
-            message += `*Phone:* ${encodeURIComponent(phone)}%0A`;
-            message += `*City:* ${encodeURIComponent(city)}%0A`;
-            message += `*State:* ${encodeURIComponent(state)}%0A`;
-            message += `*Pincode:* ${encodeURIComponent(pincode)}%0A`;
-            message += `*Timing:* ${encodeURIComponent(timing)}`;
+    const mouse = { x: null, y: null, targetX: null, targetY: null, isHovering: false };
 
-            // Launch WhatsApp
-            const whatsappURL = `https://wa.me/${targetWhatsApp}?text=${message}`;
-            window.open(whatsappURL, '_blank');
+    function resize() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      initParticles();
+    }
+    window.addEventListener('resize', resize);
+
+    // Particle Object
+    class Particle {
+      constructor() {
+        this.reset();
+      }
+
+      reset() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.vx = (Math.random() - 0.5) * config.speed;
+        this.vy = (Math.random() - 0.5) * config.speed;
+        this.size = Math.random() * 2.5 + 1;
+        this.color = config.colorPalette[Math.floor(Math.random() * config.colorPalette.length)];
+        this.baseX = this.x;
+        this.baseY = this.y;
+        this.angle = Math.random() * Math.PI * 2;
+      }
+
+      update() {
+        if (config.mode === 'nebula') {
+          this.x += this.vx * config.speed;
+          this.y += this.vy * config.speed;
+
+          if (this.x < 0 || this.x > width) this.vx *= -1;
+          if (this.y < 0 || this.y > height) this.vy *= -1;
+        } 
+        else if (config.mode === 'matrix') {
+          this.y += (this.size + config.speed * 2);
+          if (this.y > height) {
+            this.y = 0;
+            this.x = Math.random() * width;
+          }
+        } 
+        else if (config.mode === 'orbit') {
+          this.angle += 0.015 * config.speed;
+          const cx = width / 2;
+          const cy = height / 2;
+          const dist = Math.hypot(this.baseX - cx, this.baseY - cy);
+          this.x = cx + Math.cos(this.angle) * dist;
+          this.y = cy + Math.sin(this.angle) * dist;
         }
-    </script>
+
+        // Pointer Attraction/Repulsion
+        if (mouse.x !== null) {
+          const dx = mouse.x - this.x;
+          const dy = mouse.y - this.y;
+          const dist = Math.hypot(dx, dy);
+
+          if (dist < config.gravityRadius) {
+            const force = (config.gravityRadius - dist) / config.gravityRadius;
+            this.x -= (dx / dist) * force * 5;
+            this.y -= (dy / dist) * force * 5;
+          }
+        }
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.shadowBlur = 12;
+        ctx.shadowColor = this.color;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+    }
+
+    function initParticles() {
+      particles = [];
+      for (let i = 0; i < config.count; i++) {
+        particles.push(new Particle());
+      }
+      document.getElementById('renderedCount').innerText = config.count;
+    }
+
+    // Connect particles with dynamic light beams
+    function drawConnections() {
+      const maxDistance = 110;
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.hypot(dx, dy);
+
+          if (dist < maxDistance) {
+            const alpha = (1 - dist / maxDistance) * 0.25;
+            ctx.strokeStyle = `rgba(0, 240, 255, ${alpha})`;
+            ctx.lineWidth = 0.8;
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    // Main Render Loop
+    let lastTime = performance.now();
+    let frameCount = 0;
+
+    function animate(currentTime) {
+      // Background Trail Effect
+      ctx.fillStyle = 'rgba(5, 7, 15, 0.25)';
+      ctx.fillRect(0, 0, width, height);
+
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+
+      if (config.mode !== 'matrix') {
+        drawConnections();
+      }
+
+      // FPS Counter
+      frameCount++;
+      if (currentTime - lastTime >= 1000) {
+        document.getElementById('fpsCount').innerText = frameCount;
+        frameCount = 0;
+        lastTime = currentTime;
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    // Event Listeners & Interaction
+    window.addEventListener('mousemove', (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    });
+
+    window.addEventListener('mouseleave', () => {
+      mouse.x = null;
+      mouse.y = null;
+    });
+
+    // Control Handlers
+    document.querySelectorAll('.mode-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        config.mode = e.target.dataset.mode;
+        initParticles();
+      });
+    });
+
+    document.getElementById('speedSlider').addEventListener('input', (e) => {
+      config.speed = parseFloat(e.target.value);
+      document.getElementById('speedVal').innerText = `${config.speed}x`;
+    });
+
+    document.getElementById('gravitySlider').addEventListener('input', (e) => {
+      config.gravityRadius = parseInt(e.target.value);
+      document.getElementById('gravityVal').innerText = `${config.gravityRadius}px`;
+    });
+
+    document.getElementById('countSlider').addEventListener('input', (e) => {
+      config.count = parseInt(e.target.value);
+      document.getElementById('countVal').innerText = config.count;
+      initParticles();
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      initParticles();
+    });
+
+    document.getElementById('burstBtn').addEventListener('click', () => {
+      particles.forEach(p => {
+        p.vx = (Math.random() - 0.5) * 15;
+        p.vy = (Math.random() - 0.5) * 15;
+      });
+    });
+
+    // Initialization
+    resize();
+    requestAnimationFrame(animate);
+  </script>
 </body>
 </html>
