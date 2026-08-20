@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaamat Dental Clinic - Adoni</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            color: #ffffff;
+            overflow-x: hidden;
+            background-color: #0d1b2a;
+        }
+
+        /* Background Video & Overlay */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            object-fit: cover;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(13, 27, 42, 0.82);
+            z-index: -1;
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 8%;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-logo {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .logo-text {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #00b4d8;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #00b4d8;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .hero-logo-large {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            border: 2px solid #00b4d8;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #ffffff;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin-bottom: 30px;
+            color: #e0e1dd;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            background: #00b4d8;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .btn:hover {
+            background: #90e0ef;
+            color: #0d1b2a;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid #00b4d8;
+            color: #00b4d8;
+        }
+
+        .btn-secondary:hover {
+            background: #00b4d8;
+            color: #ffffff;
+        }
+
+        /* Section Container */
+        .section {
+            padding: 60px 8%;
+            background: rgba(13, 27, 42, 0.65);
+            backdrop-filter: blur(6px);
+            margin: 20px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 40px;
+            color: #00b4d8;
+        }
+
+        /* Clinic Gallery Section */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .gallery-item {
+            border-radius: 10px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s;
+        }
+
+        .gallery-item img:hover {
+            transform: scale(1.03);
+        }
+
+        .gallery-caption {
+            padding: 15px;
+            font-size: 0.95rem;
+            text-align: center;
+            color: #e0e1dd;
+        }
+
+        /* Transformation Highlight */
+        .transformation-container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .transformation-img {
+            width: 100%;
+            max-height: 400px;
+            object-fit: contain;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            margin-bottom: 15px;
+        }
+
+        /* Appointment Form */
+        .appointment-form {
+            max-width: 550px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            color: #e0e1dd;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.3);
+            color: #ffffff;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #00b4d8;
+        }
+
+        .whatsapp-btn {
+            width: 100%;
+            background: #25d366;
+            color: #ffffff;
+            font-size: 1.05rem;
+        }
+
+        .whatsapp-btn:hover {
+            background: #1ebc57;
+            color: #ffffff;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 25px;
+            background: rgba(10, 17, 26, 0.95);
+            font-size: 0.9rem;
+            color: #778da9;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.2rem; }
+            .nav-links { display: none; }
+            .form-row { flex-direction: column; gap: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background Video -->
+    <video autoplay muted loop playsinline class="video-background">
+        <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260629_021419_291eb2af-5ed4-45a0-a1d6-3ef58f4bca0b.mp4" type="video/mp4">
+    </video>
+    <div class="overlay"></div>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="nav-brand">
+            <img src="WhatsApp Image 2026-08-20 at 4.33.40 PM.jpeg" alt="Kaamat Dental Logo" class="nav-logo">
+            <span class="logo-text">KAAMAT DENTAL</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#gallery">Clinic</a></li>
+            <li><a href="#transformations">Results</a></li>
+            <li><a href="#book">Book Appointment</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <img src="WhatsApp Image 2026-08-20 at 4.33.40 PM.jpeg" alt="Kaamat Dental Logo" class="hero-logo-large">
+        <h1>Kaamat Dental Clinic - Adoni</h1>
+        <p>Providing advanced dental care and real smile transformations in a modern, comfortable environment.</p>
+        <div class="hero-btns">
+            <a href="#book" class="btn">Confirm Appointment</a>
+            <a href="https://maps.app.goo.gl/mHNMPJTasVLqe243A" target="_blank" class="btn btn-secondary">Find Us on Google Maps</a>
+        </div>
+    </section>
+
+    <!-- Clinic Gallery -->
+    <section class="section" id="gallery">
+        <h2 class="section-title">Our Facility</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="quickshot_260820_161705.jpg" alt="Waiting Area & Reception">
+                <div class="gallery-caption">Modern Reception & Waiting Area</div>
+            </div>
+            <div class="gallery-item">
+                <img src="quickshot_260820_161645.jpg" alt="Treatment Chair">
+                <div class="gallery-caption">State-of-the-Art Dental Setup</div>
+            </div>
+            <div class="gallery-item">
+                <img src="quickshot_260820_161459.png" alt="Branding Signage">
+                <div class="gallery-caption">Kaamat Dental Branding</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results / Transformations -->
+    <section class="section" id="transformations">
+        <h2 class="section-title">Smile Transformations</h2>
+        <div class="transformation-container">
+            <img src="quickshot_260820_161809.jpg" alt="Before and After Smile Transformation" class="transformation-img">
+            <p>Real smile transformation results achieved at Kaamat Dental Clinic Adoni.</p>
+        </div>
+    </section>
+
+    <!-- WhatsApp Appointment Form -->
+    <section class="section" id="book">
+        <h2 class="section-title">Book Your Appointment</h2>
+        <form class="appointment-form" id="appointmentForm" onsubmit="sendToWhatsApp(event)">
+            <div class="form-group">
+                <label for="fullName">Name</label>
+                <input type="text" id="fullName" placeholder="Enter your full name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" placeholder="Enter your phone number" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="city">City</label>
+                    <input type="text" id="city" placeholder="City" required>
+                </div>
+                <div class="form-group">
+                    <label for="state">State</label>
+                    <input type="text" id="state" placeholder="State" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="pincode">Pincode</label>
+                    <input type="text" id="pincode" placeholder="Pincode" required pattern="[0-9]{6}" title="Please enter a valid 6-digit pincode">
+                </div>
+                <div class="form-group">
+                    <label for="timing">Preferred Timing</label>
+                    <select id="timing" required>
+                        <option value="Morning (10:00 AM - 1:00 PM)">Morning (10:00 AM - 1:00 PM)</option>
+                        <option value="Afternoon (2:00 PM - 5:00 PM)">Afternoon (2:00 PM - 5:00 PM)</option>
+                        <option value="Evening (5:00 PM - 8:00 PM)">Evening (5:00 PM - 8:00 PM)</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit" class="btn whatsapp-btn">Confirm Appointment</button>
+        </form>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Kaamat Dental Clinic Adoni. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function sendToWhatsApp(event) {
+            event.preventDefault();
+
+            // Extract form values
+            const name = document.getElementById('fullName').value;
+            const phone = document.getElementById('phone').value;
+            const city = document.getElementById('city').value;
+            const state = document.getElementById('state').value;
+            const pincode = document.getElementById('pincode').value;
+            const timing = document.getElementById('timing').value;
+
+            // Target Phone Number
+            const targetWhatsApp = "919100890404"; 
+
+            // Format message string
+            let message = `Hello Kaamat Dental Clinic,%0A%0A`;
+            message += `I would like to confirm my appointment:%0A`;
+            message += `*Name:* ${encodeURIComponent(name)}%0A`;
+            message += `*Phone:* ${encodeURIComponent(phone)}%0A`;
+            message += `*City:* ${encodeURIComponent(city)}%0A`;
+            message += `*State:* ${encodeURIComponent(state)}%0A`;
+            message += `*Pincode:* ${encodeURIComponent(pincode)}%0A`;
+            message += `*Timing:* ${encodeURIComponent(timing)}`;
+
+            // Launch WhatsApp
+            const whatsappURL = `https://wa.me/${targetWhatsApp}?text=${message}`;
+            window.open(whatsappURL, '_blank');
+        }
+    </script>
+</body>
+</html>
